@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="06358fa1-93f2-46e3-aab3-c9956bc4c3fc" activeEnvironment="Default" name="graduation"
+                    resourceRoot="" soapui-version="5.5.0" abortOnError="false" runType="SEQUENTIAL"
+                    xmlns:con="http://eviware.com/soapui/config">
+    <con:settings/>
+    <con:interface xsi:type="con:RestService" id="f0a979fb-8614-46b9-b821-8c42e6e2ee6b"
+                   wadlVersion="http://wadl.dev.java.net/2009/02" name="http://localhost:8080" type="rest"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <con:settings/>
+        <con:definitionCache/>
+        <con:endpoints>
+            <con:endpoint>http://localhost:8080</con:endpoint>
+        </con:endpoints>
+        <con:resource name="Rest" path="/graduation/rest/" id="6a30b473-a8bc-41bd-9547-c52ab589f50e">
+            <con:settings/>
+            <con:parameters/>
+            <con:resource name="admin" path="admin/" id="57c44b76-e10c-4c48-84b7-b35714d1863d">
+                <con:settings/>
+                <con:parameters/>
+                <con:resource name="users" path="users" id="acc05b12-79e7-4ba4-9a6f-d6cf0e657268">
+                    <con:settings/>
+                    <con:parameters/>
+                    <con:resource name="100028" path="100028" id="8c4e66c8-7e9e-4048-b2c8-03cd5e17bae8">
+                        <con:settings/>
+                        <con:parameters/>
+                        <con:method name="" id="a1754a5e-bf89-42e9-b628-40b9335c8ef8" method="GET">
+                            <con:settings/>
+                            <con:parameters/>
+                            <con:representation type="RESPONSE">
+                                <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+                                <con:status>200</con:status>
+                                <con:params/>
+                                <con:element xmlns:ns="http://localhost/graduation/rest/admin/users/100000">
+                                    ns:Response
+                                </con:element>
+                            </con:representation>
+                            <con:representation type="FAULT">
+                                <con:mediaType>text/html;charset=utf-8</con:mediaType>
+                                <con:status>500</con:status>
+                                <con:params/>
+                                <con:element>html</con:element>
+                            </con:representation>
+                            <con:request name="Get" id="22d113c1-401c-4e21-8074-9a83fad494e7"
+                                         mediaType="application/json">
+                                <con:settings>
+                                    <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+                                </con:settings>
+                                <con:endpoint>http://localhost:8080</con:endpoint>
+                                <con:request/>
+                                <con:originalUri>http://localhost/graduation/rest/admin/users/100000</con:originalUri>
+                                <con:credentials>
+                                    <con:username>admin@gmail.com</con:username>
+                                    <con:password>admin</con:password>
+                                    <con:selectedAuthProfile>Basic</con:selectedAuthProfile>
+                                    <con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes>
+                                    <con:authType>Global HTTP Settings</con:authType>
+                                </con:credentials>
+                                <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                                <con:jmsPropertyConfig/>
+                                <con:parameters/>
+                                <con:parameterOrder/>
+                            </con:request>
+                        </con:method>
+                        <con:method name="" id="89e537ba-3e2d-4110-bbdc-de3d28f3b1d3" method="PUT">
+                            <con:settings/>
+                            <con:parameters/>
+                            <con:representation type="FAULT">
+                                <con:mediaType>text/html;charset=utf-8</con:mediaType>
+                                <con:status>401 400</con:status>
+                                <con:params/>
+                                <con:element>html</con:element>
+                            </con:representation>
+                            <con:representation type="REQUEST">
+                                <con:mediaType>application/json</con:mediaType>
+                                <con:params/>
+                            </con:representation>
+                            <con:representation type="RESPONSE">
+                                <con:mediaType xsi:nil="true"/>
+                                <con:status>204</con:status>
+                                <con:params/>
+                                <con:element>data</con:element>
+                            </con:representation>
+                            <con:representation type="RESPONSE">
+                                <con:mediaType xsi:nil="true"/>
+                                <con:status>204</con:status>
+                                <con:params/>
+                                <con:element>data</con:element>
+                            </con:representation>
+                            <con:request name="Update" id="837ed43c-2efb-4108-b417-2d788f1d5e80"
+                                         mediaType="application/json" postQueryString="false">
+                                <con:settings>
+                                    <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+                                </con:settings>
+                                <con:endpoint>http://localhost:8080</con:endpoint>
+                                <con:request>{
+                                    "id": 100028,
+                                    "name": "New user updated",
+                                    "email": "new2@yandex.ru",
+                                    "roles": ["ROLE_USER"]
+                                    }
+                                </con:request>
+                                <con:originalUri>http://localhost/graduation/rest/admin/users/100000</con:originalUri>
+                                <con:credentials>
+                                    <con:username>admin@gmail.com</con:username>
+                                    <con:password>admin</con:password>
+                                    <con:selectedAuthProfile>Basic</con:selectedAuthProfile>
+                                    <con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes>
+                                    <con:authType>Global HTTP Settings</con:authType>
+                                </con:credentials>
+                                <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                                <con:jmsPropertyConfig/>
+                                <con:parameters/>
+                                <con:parameterOrder/>
+                            </con:request>
+                        </con:method>
+                        <con:method name="" id="b7a4f58e-b43c-4c59-a696-5e01f9849624" method="PATCH">
+                            <con:settings/>
+                            <con:parameters/>
+                            <con:representation type="RESPONSE">
+                                <con:mediaType xsi:nil="true"/>
+                                <con:status>204</con:status>
+                                <con:params/>
+                                <con:element>data</con:element>
+                            </con:representation>
+                            <con:representation type="REQUEST">
+                                <con:mediaType>application/json</con:mediaType>
+                                <con:params/>
+                            </con:representation>
+                            <con:request name="Enabled" id="3d4c3502-56cb-4f5f-9083-52acb41fe39e"
+                                         mediaType="application/json" postQueryString="false">
+                                <con:settings>
+                                    <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+                                </con:settings>
+                                <con:endpoint>http://localhost:8080</con:endpoint>
+                                <con:request/>
+                                <con:originalUri>http://localhost/graduation/rest/admin/users/100028</con:originalUri>
+                                <con:credentials>
+                                    <con:username>admin@gmail.com</con:username>
+                                    <con:password>admin</con:password>
+                                    <con:selectedAuthProfile>Basic</con:selectedAuthProfile>
+                                    <con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes>
+                                    <con:authType>Global HTTP Settings</con:authType>
+                                </con:credentials>
+                                <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                                <con:jmsPropertyConfig/>
+                                <con:parameters/>
+                                <con:parameterOrder/>
+                            </con:request>
+                        </con:method>
+                        <con:method name="" id="1e996c05-eb1d-4390-9ed4-10db16534019" method="DELETE">
+                            <con:settings/>
+                            <con:parameters/>
+                            <con:representation type="RESPONSE">
+                                <con:mediaType xsi:nil="true"/>
+                                <con:status>204</con:status>
+                                <con:params/>
+                                <con:element>data</con:element>
+                            </con:representation>
+                            <con:representation type="REQUEST">
+                                <con:mediaType>application/json</con:mediaType>
+                                <con:params/>
+                            </con:representation>
+                            <con:request name="Delete" id="4d1e20e8-4334-4749-9ac7-2e3acbeb4104"
+                                         mediaType="application/json" postQueryString="false">
+                                <con:settings>
+                                    <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+                                </con:settings>
+                                <con:endpoint>http://localhost:8080</con:endpoint>
+                                <con:request/>
+                                <con:originalUri>http://localhost/graduation/rest/admin/users/100028</con:originalUri>
+                                <con:credentials>
+                                    <con:username>admin@gmail.com</con:username>
+                                    <con:password>admin</con:password>
+                                    <con:selectedAuthProfile>Basic</con:selectedAuthProfile>
+                                    <con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes>
+                                    <con:authType>Global HTTP Settings</con:authType>
+                                </con:credentials>
+                                <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                                <con:jmsPropertyConfig/>
+                                <con:parameters/>
+                                <con:parameterOrder/>
+                            </con:request>
+                        </con:method>
+                    </con:resource>
+                    <con:method name="" id="3ab9d2b1-ccc5-4189-8448-dfe7ed406d8c" method="GET">
+                        <con:settings/>
+                        <con:parameters/>
+                        <con:representation type="FAULT">
+                            <con:mediaType>text/html;charset=utf-8</con:mediaType>
+                            <con:status>500</con:status>
+                            <con:params/>
+                            <con:element>html</con:element>
+                        </con:representation>
+                        <con:representation type="RESPONSE">
+                            <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+                            <con:status>200</con:status>
+                            <con:params/>
+                            <con:element>Response</con:element>
+                        </con:representation>
+                        <con:request name="Get all" id="a144048f-8030-4c1b-a5f7-d3872ac6244e"
+                                     mediaType="application/json">
+                            <con:settings>
+                                <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+                            </con:settings>
+                            <con:endpoint>http://localhost:8080</con:endpoint>
+                            <con:request/>
+                            <con:originalUri>http://localhost/graduation/rest/admin/users</con:originalUri>
+                            <con:credentials>
+                                <con:username>admin@gmail.com</con:username>
+                                <con:password>admin</con:password>
+                                <con:selectedAuthProfile>Basic</con:selectedAuthProfile>
+                                <con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes>
+                                <con:authType>Global HTTP Settings</con:authType>
+                            </con:credentials>
+                            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                            <con:jmsPropertyConfig/>
+                            <con:parameters/>
+                            <con:parameterOrder/>
+                        </con:request>
+                    </con:method>
+                    <con:method name="" id="8fbf351e-6fd1-4183-bc61-2b246a71b11e" method="POST">
+                        <con:settings/>
+                        <con:parameters/>
+                        <con:representation type="FAULT">
+                            <con:mediaType>text/html;charset=utf-8</con:mediaType>
+                            <con:status>401 400 500</con:status>
+                            <con:params/>
+                            <con:element>html</con:element>
+                        </con:representation>
+                        <con:representation type="REQUEST">
+                            <con:mediaType>application/json</con:mediaType>
+                            <con:params/>
+                        </con:representation>
+                        <con:representation type="RESPONSE">
+                            <con:mediaType xsi:nil="true"/>
+                            <con:status>0</con:status>
+                            <con:params/>
+                            <con:element>data</con:element>
+                        </con:representation>
+                        <con:representation type="RESPONSE">
+                            <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+                            <con:status>201</con:status>
+                            <con:params/>
+                            <con:element xmlns:user="http://localhost/graduation/rest/admin/users">user:Response
+                            </con:element>
+                        </con:representation>
+                        <con:request name="Create" id="01f4f2d7-d04e-4caa-a8d4-53f2be2e0c48"
+                                     mediaType="application/json" postQueryString="false">
+                            <con:settings>
+                                <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+                            </con:settings>
+                            <con:endpoint>http://localhost:8080</con:endpoint>
+                            <con:request>{"name": "New user",
+                                "email": "new2@yandex.ru",
+                                "password": "passwordNew",
+                                "roles": ["ROLE_USER"]}
+                            </con:request>
+                            <con:originalUri>http://localhost/graduation/rest/admin/users</con:originalUri>
+                            <con:credentials>
+                                <con:username>admin@gmail.com</con:username>
+                                <con:password>admin</con:password>
+                                <con:selectedAuthProfile>Basic</con:selectedAuthProfile>
+                                <con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes>
+                                <con:authType>Global HTTP Settings</con:authType>
+                            </con:credentials>
+                            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                            <con:jmsPropertyConfig/>
+                            <con:parameters/>
+                            <con:parameterOrder/>
+                        </con:request>
+                    </con:method>
+                </con:resource>
+            </con:resource>
+        </con:resource>
+    </con:interface>
+    <con:properties/>
+    <con:wssContainer/>
+    <con:oAuth2ProfileContainer/>
+    <con:oAuth1ProfileContainer/>
+</con:soapui-project>
