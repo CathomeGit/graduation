@@ -4,12 +4,13 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "restaurants", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "restaurants_name_idx")})
+@Table(name = "restaurants",
+        uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "restaurants_unique_name_idx")})
 public class Restaurant extends AbstractNamedEntity {
 
-    @OneToMany(targetEntity = Course.class, fetch = FetchType.LAZY, mappedBy = "restaurant")
+    @OneToMany(targetEntity = Offer.class, fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("date DESC")
-    private List<Course> courses;
+    private List<Offer> offers;
 
     protected Restaurant() {
     }
@@ -26,12 +27,12 @@ public class Restaurant extends AbstractNamedEntity {
         super(restaurant.getId(), restaurant.getName());
     }
 
-    public List<Course> getCourses() {
-        return courses;
+    public List<Offer> getOffers() {
+        return offers;
     }
 
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
+    public void setOffers(List<Offer> offers) {
+        this.offers = offers;
     }
 
 }
