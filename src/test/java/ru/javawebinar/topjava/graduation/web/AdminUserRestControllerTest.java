@@ -1,9 +1,12 @@
 package ru.javawebinar.topjava.graduation.web;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.graduation.model.Role;
 import ru.javawebinar.topjava.graduation.model.User;
 
@@ -17,9 +20,14 @@ import static ru.javawebinar.topjava.graduation.TestUtil.readFromJson;
 import static ru.javawebinar.topjava.graduation.TestUtil.userHttpBasic;
 import static ru.javawebinar.topjava.graduation.testdata.UserTestData.*;
 
-class AdminRestControllerTest extends AbstractControllerTest {
+class AdminUserRestControllerTest extends AbstractControllerTest {
 
-    private static final String REST_URL = AdminRestController.REST_URL + '/';
+    private static final String REST_URL = AdminUserRestController.REST_URL + '/';
+
+    @BeforeEach
+    void setUp() {
+        cacheManager.getCache("users").clear();
+    }
 
     @Test
     void get() throws Exception {
@@ -32,13 +40,13 @@ class AdminRestControllerTest extends AbstractControllerTest {
         //.andExpect(contentJson(ADMIN));
     }
 
-    /*@Test
+    @Test
     void getNotFound() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + 1)
                 .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isUnprocessableEntity())
                 .andDo(print());
-    }*/
+    }
 
     @Test
     void delete() throws Exception {
@@ -49,13 +57,13 @@ class AdminRestControllerTest extends AbstractControllerTest {
         assertMatch(userService.getAll(), ADMIN, USER2);
     }
 
-    /*@Test
+    @Test
     void deleteNotFound() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL + 1)
                 .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isUnprocessableEntity())
                 .andDo(print());
-    }*/
+    }
 
     @Test
     void getUnAuth() throws Exception {
@@ -120,7 +128,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
         assertFalse(userService.get(USER1.getId()).isEnabled());
     }
 
-    /*@Test
+    @Test
     void createInvalid() throws Exception {
         User expected = new User(null, null, "", "newPass", Role.ROLE_USER, Role.ROLE_ADMIN);
         mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
@@ -142,9 +150,9 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isUnprocessableEntity())
                 //.andDo(print())
                 .andDo(print());
-    }*/
+    }
 
-    /*@Test
+    @Test
     @Transactional(propagation = Propagation.NEVER)
     void updateDuplicate() throws Exception {
         User updated = getUpdated();
@@ -153,18 +161,18 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
                 .content(jsonWithPassword(updated, updated.getPassword())))
-                .andExpect(status().isUnprocessableEntity())
+                .andExpect(status().isConflict())
                 .andDo(print());
-    }*/
+    }
 
-    /*@Test
+    @Test
     @Transactional(propagation = Propagation.NEVER)
     void createDuplicate() throws Exception {
-        User expected = new User(null, "New", "user@yandex.ru", "newPass", Role.ROLE_USER, Role.ROLE_ADMIN);
+        User expected = new User(null, "New", "janedoe@mail.ru", "newPass", Role.ROLE_USER, Role.ROLE_ADMIN);
         mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
                 .content(jsonWithPassword(expected, expected.getPassword())))
-                .andExpect(status().isUnprocessableEntity());
-    }*/
+                .andExpect(status().isConflict());
+    }
 }

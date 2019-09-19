@@ -7,7 +7,6 @@ import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 import ru.javawebinar.topjava.graduation.model.Role;
 import ru.javawebinar.topjava.graduation.model.User;
-import ru.javawebinar.topjava.graduation.testdata.VoteTestData;
 import ru.javawebinar.topjava.graduation.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
@@ -15,8 +14,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.javawebinar.topjava.graduation.testdata.UserTestData.*;
-import static ru.javawebinar.topjava.graduation.testdata.VoteTestData.ADMIN_KFC;
-import static ru.javawebinar.topjava.graduation.testdata.VoteTestData.ADMIN_MUMU;
 
 public class UserServiceTest extends AbstractServiceTest {
 
@@ -112,17 +109,5 @@ public class UserServiceTest extends AbstractServiceTest {
                 new User(null, "User", "mail@yandex.ru", "  ", Role.ROLE_USER)),
                 ConstraintViolationException.class
         );
-    }
-
-    @Test
-    void getWithVotes() {
-        User admin = service.getWithVotes(ADMIN.getId());
-        assertMatch(admin, ADMIN);
-        VoteTestData.assertMatch(admin.getVotes(), List.of(ADMIN_KFC, ADMIN_MUMU));
-    }
-
-    @Test
-    void getWithVotesNotFound() {
-        assertThrows(NotFoundException.class, () -> service.getWithVotes(1));
     }
 }

@@ -1,7 +1,8 @@
 -- noinspection SqlWithoutWhereForFile
 
 -- noinspection SqlWithoutWhere
-
+DELETE
+FROM results;
 DELETE
 FROM offers;
 DELETE

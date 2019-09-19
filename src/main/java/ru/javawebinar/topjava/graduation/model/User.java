@@ -1,15 +1,16 @@
 package ru.javawebinar.topjava.graduation.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.util.CollectionUtils;
 import ru.javawebinar.topjava.graduation.model.converters.RolesConverter;
+import ru.javawebinar.topjava.graduation.web.Post;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.validation.groups.Default;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -27,9 +28,9 @@ public class User extends AbstractNamedEntity {
     private String email;
 
     @Column(name = "password", nullable = false)
-    @NotBlank(groups = Persist.class)
     @Size(min = 5, max = 100, groups = Persist.class)
-    // https://stackoverflow.com/a/12505165/548473
+    @Size(min = 5, max = 20, groups = Post.class)
+    @NotBlank(groups = Persist.class)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
@@ -50,10 +51,8 @@ public class User extends AbstractNamedEntity {
 
     @OneToMany(targetEntity = Vote.class, fetch = FetchType.LAZY, mappedBy = "user")
     @OrderBy("date DESC")
+    @JsonManagedReference("user_votes")
     private List<Vote> votes;
-
-    public interface Persist extends Default {
-    }
 
     public User() {
     }

@@ -24,13 +24,16 @@ public class VoteTestData {
     public final static Vote ADMIN_KFC = new Vote(START_SEQ + 11,
             LocalDate.of(2019, 8, 2), KFC, ADMIN);
 
-    // TODO
-    //public final static List<Vote> ALL_SORTED =
+    public final static List<Vote> USER1_VOTES = List.of(USER1_MUMU, USER1_PRIME);
+    public final static List<Vote> USER2_VOTES = List.of(USER2_KFC, USER2_PRIME);
+    public final static List<Vote> ADMIN_VOTES = List.of(ADMIN_KFC, ADMIN_MUMU);
+
+
     private VoteTestData() {
     }
 
     public static void assertMatch(Vote actual, Vote expected) {
-        assertThat(actual).isEqualToIgnoringGivenFields("user", "restaurant");
+        assertThat(actual).isEqualToIgnoringGivenFields(expected, "user", "restaurant");
     }
 
     public static void assertMatch(Iterable<Vote> actual, Vote... expected) {

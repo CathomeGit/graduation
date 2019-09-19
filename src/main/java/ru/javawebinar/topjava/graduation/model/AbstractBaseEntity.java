@@ -1,13 +1,13 @@
 package ru.javawebinar.topjava.graduation.model;
 
 import org.hibernate.Hibernate;
-import ru.javawebinar.topjava.graduation.HasId;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public abstract class AbstractBaseEntity implements HasId {
+public abstract class AbstractBaseEntity implements Persistable<Integer> {
     public static final int START_SEQ = 100000;
 
     @Id
@@ -27,7 +27,6 @@ public abstract class AbstractBaseEntity implements HasId {
         return id;
     }
 
-    @Override
     public void setId(Integer id) {
         this.id = id;
     }

@@ -33,9 +33,9 @@
                        value="${hibernate.use_sql_comments}"/>
                 <entry key="#{T(org.hibernate.cfg.AvailableSettings).JPA_PROXY_COMPLIANCE}" value="false"/>
                 <entry key="javax.persistence.validation.group.pre-persist"
-                       value="ru.javawebinar.topjava.graduation.model.User$Persist"/>
+                       value="ru.javawebinar.topjava.graduation.model.Persist"/>
                 <entry key="javax.persistence.validation.group.pre-update"
-                       value="ru.javawebinar.topjava.graduation.model.User$Persist"/>
+                       value="ru.javawebinar.topjava.graduation.model.Persist"/>
             </map>
         </property>
 

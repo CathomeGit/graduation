@@ -1,9 +1,11 @@
 package ru.javawebinar.topjava.graduation.util;
 
-import ru.javawebinar.topjava.graduation.HasId;
+import org.slf4j.Logger;
 import ru.javawebinar.topjava.graduation.model.AbstractBaseEntity;
 import ru.javawebinar.topjava.graduation.util.exception.IllegalRequestDataException;
 import ru.javawebinar.topjava.graduation.util.exception.NotFoundException;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class ValidationUtil {
 
@@ -35,7 +37,7 @@ public class ValidationUtil {
         }
     }
 
-    public static void assureIdConsistent(HasId bean, int id) {
+    public static void assureIdConsistent(AbstractBaseEntity bean, int id) {
         if (bean.isNew()) {
             bean.setId(id);
         } else if (bean.getId() != id) {
@@ -53,17 +55,17 @@ public class ValidationUtil {
         return result;
     }
 
-    /*public static String getMessage(Throwable e) {
+    public static String getMessage(Throwable e) {
         return e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getClass().getName();
     }
 
-    public static Throwable logAndGetRootCause(Logger log, HttpServletRequest req, Exception e, boolean logException, ErrorType errorType) {
+    public static Throwable logAndGetRootCause(Logger log, HttpServletRequest req, Exception e, boolean logException) {
         Throwable rootCause = ValidationUtil.getRootCause(e);
         if (logException) {
-            log.error(errorType + " at request " + req.getRequestURL(), rootCause);
+            log.error("Exception at request {}: {}" + req.getRequestURL(), rootCause);
         } else {
-            log.warn("{} at request  {}: {}", errorType, req.getRequestURL(), rootCause.toString());
+            log.warn("Error at request  {}: {}", req.getRequestURL(), rootCause.toString());
         }
         return rootCause;
-   } */
+    }
 }

@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.javawebinar.topjava.graduation.AuthorizedUser;
 import ru.javawebinar.topjava.graduation.model.User;
-import ru.javawebinar.topjava.graduation.repository.CrudUserRepository;
+import ru.javawebinar.topjava.graduation.repository.JpaUserRepository;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -27,11 +27,11 @@ import static ru.javawebinar.topjava.graduation.util.ValidationUtil.checkNotFoun
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService implements UserDetailsService {
     private static final Sort SORT_NAME_EMAIL = new Sort(Sort.Direction.ASC, "name", "email");
-    private final CrudUserRepository repository;
+    private final JpaUserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(CrudUserRepository repository, PasswordEncoder passwordEncoder) {
+    public UserService(JpaUserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -70,12 +70,14 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void update(@NotNull User user) {
         User updated = get(user.getId());
+        user.setEnabled(updated.isEnabled());
+        user.setRegistered(updated.getRegistered());
+        prepareToSave(user, passwordEncoder);
+        // to allow update user without submitting password
         if (!StringUtils.hasText(user.getPassword())) {
             user.setPassword(updated.getPassword());
         }
-        user.setEnabled(updated.isEnabled());
-        user.setRegistered(updated.getRegistered());
-        repository.save(prepareToSave(user, passwordEncoder));
+        repository.save(user);
     }
 
     @CacheEvict(value = "users", allEntries = true)
@@ -84,10 +86,6 @@ public class UserService implements UserDetailsService {
         User user = get(id);
         user.setEnabled(enabled);
         repository.save(prepareToSave(user, passwordEncoder));
-    }
-
-    public User getWithVotes(int id) {
-        return checkNotFoundWithId(repository.getWithVotes(id), id);
     }
 
     @Override

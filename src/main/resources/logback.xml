@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds">
-    <!--TODO file appender doesn't work-->
-    <!--<appender name="file" class="ch.qos.logback.core.FileAppender">
-        <file>C:\\log\\graduation.log</file>
+    <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <file>/log/graduation.log</file>
         <encoder>
             <charset>UTF-8</charset>
             <pattern>%date %-5level %logger{50}.%M:%L - %msg%n</pattern>
         </encoder>
-    </appender>-->
+    </appender>
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -24,7 +23,7 @@
     <!--    <logger name="org.springframework.security.web.csrf.CsrfFilter" level="debug"/>-->
 
     <root level="info">
-        <!--        <appender-ref ref="file"/>-->
+        <appender-ref ref="file"/>
         <appender-ref ref="console"/>
     </root>
 </configuration>

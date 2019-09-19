@@ -12,24 +12,25 @@
 
     <security:global-method-security secured-annotations="enabled" pre-post-annotations="enabled"/>
 
-    <mvc:annotation-driven>
+    <mvc:annotation-driven conversion-service="conversionService">
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper" ref="objectMapper"/>
             </bean>
-            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
-                <!--                <property name="supportedMediaTypes">-->
-                <!--                    <list>-->
-                <!--                        <value>text/plain;charset=UTF-8</value>-->
-                <!--                        <value>text/html;charset=UTF-8</value>-->
-                <!--                    </list>-->
-                <!--                </property>-->
-            </bean>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
         </mvc:message-converters>
         <mvc:argument-resolvers>
             <bean class="org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver "/>
         </mvc:argument-resolvers>
     </mvc:annotation-driven>
+
+    <bean class="org.springframework.format.support.FormattingConversionServiceFactoryBean" id="conversionService">
+        <property name="formatters">
+            <set>
+                <bean class="ru.javawebinar.topjava.graduation.web.converter.DateFormatters.LocalDateFormatter"/>
+            </set>
+        </property>
+    </bean>
 
     <context:component-scan base-package="ru.javawebinar.**.web"/>
 </beans>

@@ -1,16 +1,14 @@
 package ru.javawebinar.topjava.graduation.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "votes",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date"}, name = "votes_unique_user_date_idx")}
+@Table(name = "results",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"date", "restaurant_id"}, name = "results_unique_date_restaurant_idx")}
 )
-public class Vote extends AbstractBaseEntity {
+public class VoteResult extends AbstractBaseEntity {
 
     @Column(name = "date", nullable = false, columnDefinition = "date default now()")
     @NotNull
@@ -21,24 +19,21 @@ public class Vote extends AbstractBaseEntity {
     @NotNull
     private Restaurant restaurant;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    @NotNull
-    @JsonBackReference(value = "user_votes")
-    private User user;
+    @Column(name = "count", nullable = false)
+    private Long count;
 
-    public Vote() {
+    public VoteResult() {
     }
 
-    public Vote(LocalDate date, Restaurant restaurant, User user) {
-        this(null, date, restaurant, user);
+    public VoteResult(LocalDate date, Restaurant restaurant, Long count) {
+        this(null, date, restaurant, count);
     }
 
-    public Vote(Integer id, LocalDate date, Restaurant restaurant, User user) {
+    public VoteResult(Integer id, LocalDate date, Restaurant restaurant, Long count) {
         super(id);
         this.date = date;
         this.restaurant = restaurant;
-        this.user = user;
+        this.count = count;
     }
 
     public LocalDate getDate() {
@@ -57,20 +52,20 @@ public class Vote extends AbstractBaseEntity {
         this.restaurant = restaurant;
     }
 
-    public User getUser() {
-        return user;
+    public Long getCount() {
+        return count;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCount(Long count) {
+        this.count = count;
     }
 
     @Override
     public String toString() {
-        return "Vote{" +
+        return "VoteResult{" +
                 "date=" + date +
                 ", restaurant=" + restaurant +
-                ", user=" + user +
+                ", count=" + count +
                 ", id=" + id +
                 '}';
     }

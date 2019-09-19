@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.graduation.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -13,7 +15,8 @@ public class Course extends AbstractNamedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
-    @NotNull
+    @NotNull(groups = Persist.class)
+    @JsonBackReference
     private Restaurant restaurant;
 
     public Course() {
@@ -43,7 +46,7 @@ public class Course extends AbstractNamedEntity {
     @Override
     public String toString() {
         return "Course{" +
-                "restaurant=" + restaurant +
+                "restaurant=" + restaurant.name +
                 ", name='" + name + '\'' +
                 ", id=" + id +
                 '}';

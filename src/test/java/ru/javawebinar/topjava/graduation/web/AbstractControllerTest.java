@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.graduation.web;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
@@ -30,11 +29,11 @@ abstract public class AbstractControllerTest {
         CHARACTER_ENCODING_FILTER.setForceEncoding(true);
     }
 
-    protected MockMvc mockMvc;
+    MockMvc mockMvc;
     @Autowired
     protected UserService userService;
     @Autowired
-    private CacheManager cacheManager;
+    CacheManager cacheManager;
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -45,10 +44,5 @@ abstract public class AbstractControllerTest {
                 .addFilter(CHARACTER_ENCODING_FILTER)
                 .apply(springSecurity())
                 .build();
-    }
-
-    @BeforeEach
-    void setUp() {
-        cacheManager.getCache("users").clear();
     }
 }

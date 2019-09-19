@@ -7,9 +7,16 @@
 
     <!--<persistence directory="${user.home}/cache-data"/>-->
 
-    <cache-template name="dailyExpiryCache">
+    <cache-template name="singleDailyExpiryCache">
         <expiry>
             <ttl unit="hours">24</ttl>
+        </expiry>
+        <heap>1</heap>
+    </cache-template>
+
+    <cache-template name="nonExpiryCache">
+        <expiry>
+            <none/>
         </expiry>
         <heap>5000</heap>
     </cache-template>
@@ -22,5 +29,6 @@
     </cache-template>
 
     <cache alias="users" uses-template="singleNonExpiryCache"/>
-    <cache alias="restaurants" uses-template="dailyExpiryCache"/>
+    <cache alias="current-offers" uses-template="singleDailyExpiryCache"/>
+    <cache alias="results" uses-template="nonExpiryCache"/>
 </config>
