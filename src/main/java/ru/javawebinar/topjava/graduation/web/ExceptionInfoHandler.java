@@ -24,6 +24,8 @@ import ru.javawebinar.topjava.graduation.util.exception.IllegalRequestDataExcept
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
+import static ru.javawebinar.topjava.graduation.util.ValidationUtil.getMessage;
+
 @RestControllerAdvice(annotations = RestController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
 public class ExceptionInfoHandler {
@@ -31,15 +33,14 @@ public class ExceptionInfoHandler {
 
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<ErrorInfo> applicationError(HttpServletRequest req, ApplicationException appEx) {
-        ErrorInfo errorInfo = logAndGetErrorInfo(req, appEx, false, appEx.getLocalizedMessage());
+        ErrorInfo errorInfo = logAndGetErrorInfo(req, appEx, false, getMessage(appEx));
         return ResponseEntity.status(appEx.getHttpStatus()).body(errorInfo);
     }
 
     @ResponseStatus(value = HttpStatus.CONFLICT)  // 409
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ErrorInfo conflict(HttpServletRequest req, DataIntegrityViolationException e) {
-        String rootMsg = ValidationUtil.getRootCause(e).getMessage();
-        return logAndGetErrorInfo(req, e, true, rootMsg);
+        return logAndGetErrorInfo(req, e, true, "Data integrity error");
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)  // 422
@@ -73,6 +74,6 @@ public class ExceptionInfoHandler {
     private ErrorInfo logAndGetErrorInfo(HttpServletRequest req, Exception e, boolean logException, String... details) {
         Throwable rootCause = ValidationUtil.logAndGetRootCause(log, req, e, logException);
         return new ErrorInfo(req.getRequestURL(),
-                details.length != 0 ? details : new String[]{ValidationUtil.getMessage(rootCause)});
+                details.length != 0 ? details : new String[]{getMessage(rootCause)});
     }
 }

@@ -29,7 +29,7 @@ abstract public class AbstractControllerTest {
         CHARACTER_ENCODING_FILTER.setForceEncoding(true);
     }
 
-    MockMvc mockMvc;
+    protected MockMvc mockMvc;
     @Autowired
     protected UserService userService;
     @Autowired

@@ -1,16 +1,10 @@
 -- noinspection SqlWithoutWhereForFile
 
 -- noinspection SqlWithoutWhere
-DELETE
-FROM results;
-DELETE
-FROM offers;
-DELETE
-FROM votes;
-DELETE
-FROM restaurants;
-DELETE
-FROM users;
+DELETE FROM offers;
+DELETE FROM votes;
+DELETE FROM restaurants;
+DELETE FROM users;
 ALTER SEQUENCE GLOBAL_SEQ RESTART WITH 100000;
 
 INSERT INTO users (name, email, password, roles)

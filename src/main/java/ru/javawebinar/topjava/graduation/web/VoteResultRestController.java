@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import ru.javawebinar.topjava.graduation.model.VoteResult;
-import ru.javawebinar.topjava.graduation.service.VoteResultService;
+import ru.javawebinar.topjava.graduation.service.VoteService;
+import ru.javawebinar.topjava.graduation.to.VoteResultTo;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -22,24 +22,24 @@ import static ru.javawebinar.topjava.graduation.web.VoteResultRestController.RES
 @RequestMapping(value = REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class VoteResultRestController {
 
-    public static final String REST_URL = "/rest/vote-results";
+    static final String REST_URL = "/rest/vote-results";
 
     @Autowired
-    VoteResultService service;
+    VoteService service;
 
     @GetMapping
-    public List<VoteResult> current() {
+    public List<VoteResultTo> current() {
         if (ZonedDateTime.now(TIMEZONE).getHour() < RESTRICTION_HOUR) {
             throw new ResponseStatusException(HttpStatus.LOCKED, "Voting is not finished");
         }
-        return service.createAndReturn(getZoneAwareCurrentDate());
+        return service.voteResults(getZoneAwareCurrentDate());
     }
 
     @GetMapping("/history")
-    public List<VoteResult> history(@RequestParam LocalDate date) {
+    public List<VoteResultTo> history(@RequestParam LocalDate date) {
         if (date.equals(getZoneAwareCurrentDate())) {
             return current();
         }
-        return service.createAndReturn(date);
+        return service.voteResults(date);
     }
 }

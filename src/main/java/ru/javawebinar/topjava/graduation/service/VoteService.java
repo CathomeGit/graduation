@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.graduation.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,9 @@ import ru.javawebinar.topjava.graduation.model.Vote;
 import ru.javawebinar.topjava.graduation.repository.JpaRestaurantRepository;
 import ru.javawebinar.topjava.graduation.repository.JpaUserRepository;
 import ru.javawebinar.topjava.graduation.repository.JpaVoteRepository;
+import ru.javawebinar.topjava.graduation.to.VoteResultTo;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -54,5 +57,18 @@ public class VoteService {
         Vote vote = new Vote(date, restaurant, user);
         voteRepository.deleteOnDate(userId, date);
         return voteRepository.save(vote);
+    }
+
+    @Cacheable(value = "results")
+    public List<VoteResultTo> voteResults(@NotNull LocalDate date) {
+        List<VoteResultTo> results = voteRepository.retrieveVoteResult(date);
+        // https://stackoverflow.com/a/39192050/4925022 -->
+        for (VoteResultTo result : results) {
+            if (result.getDate() == null) {
+                result.setDate(date);
+            }
+        }
+        // <--
+        return results;
     }
 }

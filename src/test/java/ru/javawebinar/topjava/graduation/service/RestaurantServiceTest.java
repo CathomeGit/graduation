@@ -1,9 +1,7 @@
 package ru.javawebinar.topjava.graduation.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import ru.javawebinar.topjava.graduation.model.Restaurant;
@@ -19,14 +17,6 @@ public class RestaurantServiceTest extends AbstractServiceTest {
 
     @Autowired
     protected RestaurantService service;
-
-    @Autowired
-    private CacheManager cacheManager;
-
-    @BeforeEach
-    void setUp() {
-        cacheManager.getCache("restaurants").clear();
-    }
 
     @Test
     void create() {
@@ -94,7 +84,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    void createWithException() throws Exception {
+    void createWithException() {
         validateRootCause(() -> service.create(new Restaurant(null, "  ")), ConstraintViolationException.class);
     }
 }

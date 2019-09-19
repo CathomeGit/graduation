@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjava.graduation.model.Offer;
 import ru.javawebinar.topjava.graduation.service.OfferService;
+import ru.javawebinar.topjava.graduation.util.ValidationUtil;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -15,8 +16,8 @@ import java.util.List;
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class OfferRestController {
 
-    public static final String ADMIN_URL = "/rest/admin/restaurants/{restaurantId}/offers";
-    public static final String USER_URL = "/rest/profile/restaurants/{restaurantId}/offers";
+    private static final String ADMIN_URL = "/rest/admin/restaurants/{restaurantId}/offers";
+    private static final String USER_URL = "/rest/profile/restaurants/{restaurantId}/offers";
 
     @Autowired
     protected OfferService service;
@@ -39,8 +40,9 @@ public class OfferRestController {
     }
 
     @PostMapping(value = ADMIN_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseStatus(value = HttpStatus.CREATED)
     public void createAll(@PathVariable int restaurantId, @Valid @RequestBody List<Offer> offers) {
+        offers.forEach(ValidationUtil::checkNew);
         service.saveAll(offers, restaurantId);
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.graduation.model.Vote;
-import ru.javawebinar.topjava.graduation.model.VoteResult;
+import ru.javawebinar.topjava.graduation.to.VoteResultTo;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,9 +30,9 @@ public interface JpaVoteRepository extends JpaRepository<Vote, Integer> {
     @EntityGraph(attributePaths = {"restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
     List<Vote> findAllByUserIdAndDateBetween(int userId, LocalDate startDate, LocalDate endDate, Sort sort);
 
-    @Query("SELECT new ru.javawebinar.topjava.graduation.model.VoteResult(v.date, r, COUNT(v)) FROM Restaurant r " +
+    @Query("SELECT new ru.javawebinar.topjava.graduation.to.VoteResultTo(v.date, r, COUNT(v)) FROM Restaurant r " +
             "LEFT JOIN Vote v ON v.restaurant.id = r.id AND v.date=?1 WHERE EXISTS(SELECT o FROM Offer o " +
             "WHERE r.id = o.restaurant.id AND o.date=?1)" +
             "GROUP BY v.date, r.id ORDER BY COUNT(v) DESC")
-    List<VoteResult> retrieveVoteResult(LocalDate date);
+    List<VoteResultTo> retrieveVoteResult(LocalDate date);
 }

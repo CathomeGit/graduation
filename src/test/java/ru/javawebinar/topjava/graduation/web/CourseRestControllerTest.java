@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.graduation.web;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -8,35 +7,34 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.javawebinar.topjava.graduation.model.Restaurant;
-import ru.javawebinar.topjava.graduation.service.RestaurantService;
+import ru.javawebinar.topjava.graduation.model.Course;
+import ru.javawebinar.topjava.graduation.service.CourseService;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javawebinar.topjava.graduation.TestUtil.readFromJson;
 import static ru.javawebinar.topjava.graduation.TestUtil.userHttpBasic;
-import static ru.javawebinar.topjava.graduation.testdata.RestaurantTestData.*;
+import static ru.javawebinar.topjava.graduation.testdata.CourseTestData.*;
+import static ru.javawebinar.topjava.graduation.testdata.RestaurantTestData.PRIME;
 import static ru.javawebinar.topjava.graduation.testdata.UserTestData.ADMIN;
 import static ru.javawebinar.topjava.graduation.testdata.UserTestData.USER1;
 import static ru.javawebinar.topjava.graduation.web.json.JsonUtil.writeValue;
 
-class RestaurantRestControllerTest extends AbstractControllerTest {
+class CourseRestControllerTest extends AbstractControllerTest {
 
-    private static final String ADMIN_URL = RestaurantRestController.ADMIN_URL + '/';
-    private static final String USER_URL = RestaurantRestController.USER_URL + '/';
+    private static final String ADMIN_URL = "/rest/admin/restaurants/" + PRIME.getId() + "/courses/";
+    private static final String USER_URL = "/rest/profile/restaurants/" + PRIME.getId() + "/courses/";
 
     @Autowired
-    RestaurantService service;
-
-    @BeforeEach
-    void setUp() {
-        cacheManager.getCache("current-offers").clear();
-    }
+    CourseService service;
 
     @Test
     void get() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(USER_URL + KFC.getId())
+        mockMvc.perform(MockMvcRequestBuilders.get(USER_URL + PRIME_01_DRINK.getId())
                 .with(userHttpBasic(USER1)))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -53,7 +51,7 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
 
     @Test
     void deleteRestricted() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete(ADMIN_URL + KFC.getId())
+        mockMvc.perform(MockMvcRequestBuilders.delete(ADMIN_URL + PRIME_01_DRINK.getId())
                 .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isConflict());
@@ -61,7 +59,7 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        int id = service.create(getCreated()).getId();
+        int id = service.create(getCreated(), PRIME.getId()).getId();
         mockMvc.perform(MockMvcRequestBuilders.delete(ADMIN_URL + id)
                 .with(userHttpBasic(ADMIN)))
                 .andDo(print())
@@ -84,29 +82,31 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
 
     @Test
     void update() throws Exception {
-        Restaurant updated = getUpdated();
+        Course updated = getUpdated();
         mockMvc.perform(MockMvcRequestBuilders.put(ADMIN_URL + updated.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
                 .content(writeValue(updated)))
                 .andExpect(status().isNoContent());
 
-        assertMatch(service.get(updated.getId()), updated);
+        assertMatch(service.get(updated.getId(), PRIME.getId()), updated);
     }
 
     @Test
     void createWithLocation() throws Exception {
-        Restaurant expected = getCreated();
+        Course expected = getCreated();
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(ADMIN_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
                 .content(writeValue(expected)))
                 .andExpect(status().isCreated());
 
-        Restaurant returned = readFromJson(action, Restaurant.class);
+        Course returned = readFromJson(action, Course.class);
         expected.setId(returned.getId());
         assertMatch(returned, expected);
-        assertMatch(service.getAll(), KFC, PRIME, MUMU, expected);
+        List<Course> expectedList = new LinkedList<>(PRIME_COURSES);
+        expectedList.add(expected);
+        assertMatch(service.getAll(PRIME.getId()), expectedList);
     }
 
     @Test
@@ -119,7 +119,7 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
 
     @Test
     void createInvalid() throws Exception {
-        Restaurant expected = new Restaurant("");
+        Course expected = new Course("", PRIME);
         mockMvc.perform(MockMvcRequestBuilders.post(ADMIN_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
@@ -130,7 +130,7 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
 
     @Test
     void updateInvalid() throws Exception {
-        Restaurant updated = getUpdated();
+        Course updated = getUpdated();
         updated.setName("");
         mockMvc.perform(MockMvcRequestBuilders.put(ADMIN_URL + updated.getId())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -143,9 +143,9 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
     @Test
     @Transactional(propagation = Propagation.NEVER)
     void updateDuplicate() throws Exception {
-        Restaurant updated = new Restaurant(PRIME);
-        updated.setName(KFC.getName());
-        mockMvc.perform(MockMvcRequestBuilders.put(ADMIN_URL + PRIME.getId())
+        Course updated = new Course(PRIME_01_DRINK);
+        updated.setName(PRIME_02_DRINK.getName());
+        mockMvc.perform(MockMvcRequestBuilders.put(ADMIN_URL + PRIME_01_DRINK.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
                 .content(writeValue(updated)))
@@ -156,7 +156,7 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
     @Test
     @Transactional(propagation = Propagation.NEVER)
     void createDuplicate() throws Exception {
-        Restaurant expected = new Restaurant(PRIME);
+        Course expected = new Course(PRIME_01_DRINK);
         expected.setId(null);
         mockMvc.perform(MockMvcRequestBuilders.post(ADMIN_URL)
                 .contentType(MediaType.APPLICATION_JSON)

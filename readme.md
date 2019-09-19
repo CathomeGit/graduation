@@ -1,5 +1,5 @@
-###Application description
-####TopJava graduation project
+## TopJava graduation project
+### Application description
 A voting system for deciding where to have lunch with REST API.\
 Admins manage restaurants and upload its' menus daily. Users vote for a restaurant to have lunch at until 11:00.\
 Voting results can be viewed after the voting process is finished. Historical results can be requested on date.
@@ -26,7 +26,7 @@ Voting results can be viewed after the voting process is finished. Historical re
 Time is defined by default server system timezone.
 ### Curl commands to REST API
 (application deployed in application context `graduation`)
-##### AdminUserRestController
+#### AdminUserRestController
 
 | Role | Path                 |  Method | Description   |
 |------|----------------------|---------|---------------|
@@ -74,7 +74,7 @@ Create with error: `curl -s -X POST -d '{"name":"User1","email":"admin1@gmail.co
 
 `curl -s -X DELETE http://localhost:8080/graduation/rest/admin/users/100000 --user admin@gmail.com:admin`
 
-##### RestaurantRestController
+#### RestaurantRestController
 
 | Role | Path                         |  Method | Description         |
 |------|------------------------------|---------|---------------------|
@@ -121,7 +121,7 @@ Create with error: `curl -s -X POST -d '{"name":""}' -H 'Content-Type:applicatio
 * **Example:**
 
 `curl -s -X DELETE http://localhost:8080/graduation/rest/admin/restaurants/100044 --user admin@gmail.com:admin`
-##### CourseRestController
+#### CourseRestController
 
 | Role | Path                                                |  Method | Description     |
 |------|-----------------------------------------------------|---------|-----------------|
@@ -160,7 +160,7 @@ Create with error: `curl -s -X POST -d '{"name":" "}' -H 'Content-Type:applicati
 * **Example:**
 
 `curl -s -X DELETE http://localhost:8080/graduation/rest/admin/restaurants/100003/courses/100044 --user admin@gmail.com:admin`
-##### CourseRestController
+#### OfferRestController
 
 | Role | Path                                               |  Method | Description    |
 |------|----------------------------------------------------|---------|----------------|
@@ -197,7 +197,7 @@ Create with error: `curl -s -X POST -d '{"name":" "}' -H 'Content-Type:applicati
 
 `curl -s -X POST -d '[{"course":{"name":"New soup"},"price":100.80},{"course":{"name":"New main course"},"price":151.50},{"course":{"name":"New drink"},"price":120.20}]' -H 'Content-Type:application/json' http://localhost:8080/graduation/rest/admin/restaurants/100003/offers --user admin@gmail.com:admin`
 
-##### ProfileVoteRestController, AdminVoteRestController
+#### ProfileVoteRestController, AdminVoteRestController
 
 | Role | Path                                  |  Method | Description             |
 |------|---------------------------------------|---------|-------------------------|
@@ -234,7 +234,7 @@ Create with error: `curl -s -X POST -d '{"name":" "}' -H 'Content-Type:applicati
 
 `curl -s -X POST http://localhost:8080/graduation/rest/profile/votes?restaurantId=100003 --user ivan-i@ya.ru:qwerty`
 
-##### VoteResultRestController
+#### VoteResultRestController
 
 | Role       | Path                    |  Method | Description               |
 |------------|-------------------------|---------|---------------------------|
@@ -252,7 +252,12 @@ Create with error: `curl -s -X POST -d '{"name":" "}' -H 'Content-Type:applicati
 * **Example:**
 
 `curl -s http://localhost:8080/graduation/rest/vote-results/history?date=2019-08-02 --user ivan-i@ya.ru:qwerty`
-###Ideas for further development
+
+### Ideas for further development
  * Add restaurant security role. Let restaurants automatically post their offers with REST API. Admins should view and approve them before voting process. 
  * Restrict posting offers after voting has begun.
- * Notify users with email/sms of their profiles' changes.
+ * Restrict voting for a restaurant that has no current offers.
+ * Notify users by email/sms of their profiles' changes.
+ * Add message bundle.
+ * Improve exception messages.
+ * Validate nested entities when posting offers.
