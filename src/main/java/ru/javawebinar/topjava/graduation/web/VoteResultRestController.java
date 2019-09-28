@@ -1,15 +1,14 @@
 package ru.javawebinar.topjava.graduation.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 import ru.javawebinar.topjava.graduation.service.VoteService;
 import ru.javawebinar.topjava.graduation.to.VoteResultTo;
+import ru.javawebinar.topjava.graduation.util.exception.LockedException;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -30,7 +29,7 @@ public class VoteResultRestController {
     @GetMapping
     public List<VoteResultTo> current() {
         if (ZonedDateTime.now(TIMEZONE).getHour() < RESTRICTION_HOUR) {
-            throw new ResponseStatusException(HttpStatus.LOCKED, "Voting is not finished");
+            throw new LockedException("Voting is not finished");
         }
         return service.voteResults(getZoneAwareCurrentDate());
     }
