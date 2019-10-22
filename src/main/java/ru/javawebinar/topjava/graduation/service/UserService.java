@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.graduation.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -10,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.javawebinar.topjava.graduation.AuthorizedUser;
@@ -25,8 +28,10 @@ import static ru.javawebinar.topjava.graduation.util.ValidationUtil.checkNotFoun
 
 @Service("userService")
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Transactional
 public class UserService implements UserDetailsService {
     private static final Sort SORT_NAME_EMAIL = new Sort(Sort.Direction.ASC, "name", "email");
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     private final JpaUserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
@@ -45,30 +50,38 @@ public class UserService implements UserDetailsService {
 
     @CacheEvict(value = "users", allEntries = true)
     public User create(@NotNull User user) {
+        logger.info("create user {}", user);
         return repository.save(prepareToSave(user, passwordEncoder));
     }
 
     @CacheEvict(value = "users", allEntries = true)
     public void delete(int id) {
+        logger.info("delete user {}", id);
         checkNotFoundWithId(repository.delete(id) != 0, id);
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public User get(int id) {
+        logger.info("get user {}", id);
         return checkNotFoundWithId(repository.findById(id).orElse(null), id);
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     User getByEmail(@NotBlank String email) {
+        logger.info("get user by email {}", email);
         return checkNotFound(repository.getByEmail(email), "email = " + email);
     }
 
     @Cacheable("users")
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public List<User> getAll() {
+        logger.info("get all users");
         return repository.findAll(SORT_NAME_EMAIL);
     }
 
     @CacheEvict(value = "users", allEntries = true)
-    @Transactional
     public void update(@NotNull User user) {
+        logger.info("update user {}", user);
         User updated = get(user.getId());
         user.setEnabled(updated.isEnabled());
         user.setRegistered(updated.getRegistered());
@@ -81,15 +94,17 @@ public class UserService implements UserDetailsService {
     }
 
     @CacheEvict(value = "users", allEntries = true)
-    @Transactional
     public void enable(int id, boolean enabled) {
+        logger.info("set user {} enabled = {}", id, enabled);
         User user = get(id);
         user.setEnabled(enabled);
         repository.save(prepareToSave(user, passwordEncoder));
     }
 
     @Override
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {
+        logger.info("get authorized user by email {}", email);
         User user = repository.getByEmail(email.toLowerCase());
         if (user == null) {
             throw new UsernameNotFoundException("User " + email + " is not found");

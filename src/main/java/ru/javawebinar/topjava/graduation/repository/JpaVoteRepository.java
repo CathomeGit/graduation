@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.graduation.model.Vote;
 import ru.javawebinar.topjava.graduation.to.VoteResultTo;
 
@@ -14,9 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-@Transactional(readOnly = true)
 public interface JpaVoteRepository extends JpaRepository<Vote, Integer> {
-    @Transactional
     @Modifying
     @Query("DELETE FROM Vote v WHERE v.user.id=?1 AND v.date=?2")
     void deleteOnDate(int userId, LocalDate date);

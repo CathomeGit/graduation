@@ -1,9 +1,12 @@
 package ru.javawebinar.topjava.graduation.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.graduation.model.Dish;
 import ru.javawebinar.topjava.graduation.repository.JpaDishRepository;
@@ -15,10 +18,12 @@ import java.util.List;
 import static ru.javawebinar.topjava.graduation.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
+@Transactional
 public class DishService {
     private static final Sort SORT_NAME = new Sort(Sort.Direction.ASC, "name");
     private final JpaDishRepository repository;
     private final JpaRestaurantRepository restaurantRepository;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     public DishService(JpaDishRepository repository, JpaRestaurantRepository restaurantRepository) {
@@ -27,27 +32,32 @@ public class DishService {
     }
 
     @CacheEvict(value = "current-offers", allEntries = true)
-    @Transactional
     public Dish create(@NotNull Dish dish, int restaurantId) {
+        logger.info("create dish {} for restaurant {}", dish, restaurantId);
         return save(dish, restaurantId);
     }
 
     @CacheEvict(value = "current-offers", allEntries = true)
     public void delete(int id, int restaurantId) {
+        logger.info("delete dish {} for restaurant {}", id, restaurantId);
         checkNotFoundWithId(repository.delete(id, restaurantId) != 0, id);
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public Dish get(int id, int restaurantId) {
+        logger.info("get dish {} for restaurant {}", id, restaurantId);
         return checkNotFoundWithId(repository.findByIdAndRestaurantId(id, restaurantId), id);
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public List<Dish> getAll(int restaurantId) {
+        logger.info("get all dishes for restaurant {}", restaurantId);
         return repository.findAllByRestaurantId(restaurantId, SORT_NAME);
     }
 
     @CacheEvict(value = "current-offers", allEntries = true)
-    @Transactional
     public void update(@NotNull Dish dish, int restaurantId) {
+        logger.info("update dish {} for restaurant {}", dish, restaurantId);
         save(dish, restaurantId);
     }
 
