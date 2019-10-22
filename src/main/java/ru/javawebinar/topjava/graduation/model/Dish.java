@@ -6,12 +6,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "courses",
-        uniqueConstraints = {@UniqueConstraint(name = "courses_unique_name_restaurant_idx",
+@Table(name = "dishes",
+        uniqueConstraints = {@UniqueConstraint(name = "dishes_unique_name_restaurant_idx",
                 columnNames = {"name", "restaurant_id"})
         }
 )
-public class Course extends AbstractNamedEntity {
+public class Dish extends AbstractNamedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -19,18 +19,18 @@ public class Course extends AbstractNamedEntity {
     @JsonBackReference
     private Restaurant restaurant;
 
-    public Course() {
+    public Dish() {
     }
 
-    public Course(Course course) {
-        this(course.getId(), course.getName(), course.getRestaurant());
+    public Dish(Dish dish) {
+        this(dish.getId(), dish.getName(), dish.getRestaurant());
     }
 
-    public Course(String name, Restaurant restaurant) {
+    public Dish(String name, Restaurant restaurant) {
         this(null, name, restaurant);
     }
 
-    public Course(Integer id, String name, Restaurant restaurant) {
+    public Dish(Integer id, String name, Restaurant restaurant) {
         super(id, name);
         this.restaurant = restaurant;
     }
@@ -45,7 +45,7 @@ public class Course extends AbstractNamedEntity {
 
     @Override
     public String toString() {
-        return "Course{" +
+        return "Dish{" +
                 "restaurant=" + restaurant.name +
                 ", name='" + name + '\'' +
                 ", id=" + id +

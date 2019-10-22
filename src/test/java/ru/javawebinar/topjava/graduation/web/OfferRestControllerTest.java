@@ -56,7 +56,7 @@ class OfferRestControllerTest extends AbstractControllerTest {
     @Test
     void create() throws Exception {
         List<Offer> offers = new LinkedList<>();
-        PRIME_01.forEach(o -> offers.add(new Offer(null, o.getCourse(), o.getRestaurant(), o.getDate(), o.getPrice())));
+        PRIME_01.forEach(o -> offers.add(new Offer(null, o.getDish(), o.getRestaurant(), o.getDate(), o.getPrice())));
 
         mockMvc.perform(MockMvcRequestBuilders.post(ADMIN_URL)
                 .contentType(MediaType.APPLICATION_JSON)

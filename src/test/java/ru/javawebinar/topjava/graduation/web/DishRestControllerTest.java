@@ -7,8 +7,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.javawebinar.topjava.graduation.model.Course;
-import ru.javawebinar.topjava.graduation.service.CourseService;
+import ru.javawebinar.topjava.graduation.model.Dish;
+import ru.javawebinar.topjava.graduation.service.DishService;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,19 +18,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javawebinar.topjava.graduation.TestUtil.readFromJson;
 import static ru.javawebinar.topjava.graduation.TestUtil.userHttpBasic;
-import static ru.javawebinar.topjava.graduation.testdata.CourseTestData.*;
+import static ru.javawebinar.topjava.graduation.testdata.DishTestData.*;
 import static ru.javawebinar.topjava.graduation.testdata.RestaurantTestData.PRIME;
 import static ru.javawebinar.topjava.graduation.testdata.UserTestData.ADMIN;
 import static ru.javawebinar.topjava.graduation.testdata.UserTestData.USER1;
 import static ru.javawebinar.topjava.graduation.web.json.JsonUtil.writeValue;
 
-class CourseRestControllerTest extends AbstractControllerTest {
+class DishRestControllerTest extends AbstractControllerTest {
 
-    private static final String ADMIN_URL = "/rest/admin/restaurants/" + PRIME.getId() + "/courses/";
-    private static final String USER_URL = "/rest/profile/restaurants/" + PRIME.getId() + "/courses/";
+    private static final String ADMIN_URL = "/rest/admin/restaurants/" + PRIME.getId() + "/dishes/";
+    private static final String USER_URL = "/rest/profile/restaurants/" + PRIME.getId() + "/dishes/";
 
     @Autowired
-    CourseService service;
+    DishService service;
 
     @Test
     void get() throws Exception {
@@ -82,7 +82,7 @@ class CourseRestControllerTest extends AbstractControllerTest {
 
     @Test
     void update() throws Exception {
-        Course updated = getUpdated();
+        Dish updated = getUpdated();
         mockMvc.perform(MockMvcRequestBuilders.put(ADMIN_URL + updated.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
@@ -94,17 +94,17 @@ class CourseRestControllerTest extends AbstractControllerTest {
 
     @Test
     void createWithLocation() throws Exception {
-        Course expected = getCreated();
+        Dish expected = getCreated();
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(ADMIN_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
                 .content(writeValue(expected)))
                 .andExpect(status().isCreated());
 
-        Course returned = readFromJson(action, Course.class);
+        Dish returned = readFromJson(action, Dish.class);
         expected.setId(returned.getId());
         assertMatch(returned, expected);
-        List<Course> expectedList = new LinkedList<>(PRIME_COURSES);
+        List<Dish> expectedList = new LinkedList<>(PRIME_DISHES);
         expectedList.add(expected);
         assertMatch(service.getAll(PRIME.getId()), expectedList);
     }
@@ -119,7 +119,7 @@ class CourseRestControllerTest extends AbstractControllerTest {
 
     @Test
     void createInvalid() throws Exception {
-        Course expected = new Course("", PRIME);
+        Dish expected = new Dish("", PRIME);
         mockMvc.perform(MockMvcRequestBuilders.post(ADMIN_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
@@ -130,7 +130,7 @@ class CourseRestControllerTest extends AbstractControllerTest {
 
     @Test
     void updateInvalid() throws Exception {
-        Course updated = getUpdated();
+        Dish updated = getUpdated();
         updated.setName("");
         mockMvc.perform(MockMvcRequestBuilders.put(ADMIN_URL + updated.getId())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -143,7 +143,7 @@ class CourseRestControllerTest extends AbstractControllerTest {
     @Test
     @Transactional(propagation = Propagation.NEVER)
     void updateDuplicate() throws Exception {
-        Course updated = new Course(PRIME_01_DRINK);
+        Dish updated = new Dish(PRIME_01_DRINK);
         updated.setName(PRIME_02_DRINK.getName());
         mockMvc.perform(MockMvcRequestBuilders.put(ADMIN_URL + PRIME_01_DRINK.getId())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -156,7 +156,7 @@ class CourseRestControllerTest extends AbstractControllerTest {
     @Test
     @Transactional(propagation = Propagation.NEVER)
     void createDuplicate() throws Exception {
-        Course expected = new Course(PRIME_01_DRINK);
+        Dish expected = new Dish(PRIME_01_DRINK);
         expected.setId(null);
         mockMvc.perform(MockMvcRequestBuilders.post(ADMIN_URL)
                 .contentType(MediaType.APPLICATION_JSON)

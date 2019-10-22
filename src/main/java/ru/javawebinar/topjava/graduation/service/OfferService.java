@@ -7,10 +7,10 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import ru.javawebinar.topjava.graduation.model.Course;
+import ru.javawebinar.topjava.graduation.model.Dish;
 import ru.javawebinar.topjava.graduation.model.Offer;
 import ru.javawebinar.topjava.graduation.model.Restaurant;
-import ru.javawebinar.topjava.graduation.repository.JpaCourseRepository;
+import ru.javawebinar.topjava.graduation.repository.JpaDishRepository;
 import ru.javawebinar.topjava.graduation.repository.JpaOfferRepository;
 import ru.javawebinar.topjava.graduation.repository.JpaRestaurantRepository;
 
@@ -26,14 +26,14 @@ public class OfferService {
     private static final Sort SORT_DATE = new Sort(Sort.Direction.DESC, "date");
 
     private final JpaOfferRepository offerRepository;
-    private final JpaCourseRepository courseRepository;
+    private final JpaDishRepository dishRepository;
     private final JpaRestaurantRepository restaurantRepository;
 
     @Autowired
-    public OfferService(JpaOfferRepository offerRepository, JpaCourseRepository courseRepository,
+    public OfferService(JpaOfferRepository offerRepository, JpaDishRepository dishRepository,
                         JpaRestaurantRepository restaurantRepository) {
         this.offerRepository = offerRepository;
-        this.courseRepository = courseRepository;
+        this.dishRepository = dishRepository;
         this.restaurantRepository = restaurantRepository;
     }
 
@@ -56,18 +56,18 @@ public class OfferService {
         LocalDate date = getZoneAwareCurrentDate();
         Restaurant restaurant = restaurantRepository.getOne(restaurantId);
         for (Offer offer : offers) {
-            Course course = offer.getCourse();
-            Assert.notNull(course, "Course is mandatory");
-            Course fetchCourse = course.getId() == null ? courseRepository.getByRestaurantIdAndName(restaurantId, course.getName()) :
-                    courseRepository.getOne(course.getId());
-            if (fetchCourse == null) {
-                course.setRestaurant(restaurant);
-                course = courseRepository.save(course);
+            Dish dish = offer.getDish();
+            Assert.notNull(dish, "Dish is mandatory");
+            Dish fetchDish = dish.getId() == null ? dishRepository.getByRestaurantIdAndName(restaurantId, dish.getName()) :
+                    dishRepository.getOne(dish.getId());
+            if (fetchDish == null) {
+                dish.setRestaurant(restaurant);
+                dish = dishRepository.save(dish);
             } else {
-                course = fetchCourse;
+                dish = fetchDish;
             }
             offer.setDate(date);
-            offer.setCourse(course);
+            offer.setDish(dish);
             offer.setRestaurant(restaurant);
         }
         offerRepository.deleteAllOnDate(restaurantId, date);

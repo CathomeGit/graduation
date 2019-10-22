@@ -7,19 +7,19 @@ Voting results can be viewed after the voting process is finished. Historical re
  * Admin section is accessible by `/rest/admin` path and user section under `/rest/profile` path. Mappings under `/rest` are accessible with any role.
  * The following resources are accessible:
     - restaurants;
-    - restaurant courses;
+    - restaurant dishes;
     - restaurant daily offers;
     - users;
     - user votes
  * Admins have the following functions:
     - viewing, adding, updating, enabling/disabling and deleting users.
     - viewing, adding, updating, deleting restaurants. If restaurant has votes it can't be deleted.
-    - viewing, adding, updating, deleting courses. If a course is included in an offer it can't be deleted.
-    - viewing and uploading restaurant daily offers. Offers are bulk uploaded per restaurant. Non-existent courses are created or existing ones are retrieved by name and restaurant id otherwise. In case of repeated post action previously uploaded offers are replaced with new ones.
+    - viewing, adding, updating, deleting dishes. If a course is included in an offer it can't be deleted.
+    - viewing and uploading restaurant daily offers. Offers are bulk uploaded per restaurant. Non-existent dishes are created or existing ones are retrieved by name and restaurant id otherwise. In case of repeated post action previously uploaded offers are replaced with new ones.
     - viewing votes of any user.
     - viewing vote results after 11:00.
  * Users have the following abilities:
-    - viewing restaurants, its' courses and offers.
+    - viewing restaurants, its' dishes and offers.
     - voting for a restaurant before 11:00. If vote is posted repeatedly previous vote is replaced.
     - viewing own votes.
     - viewing vote results after 11:00.
@@ -125,41 +125,41 @@ Create with error: `curl -s -X POST -d '{"name":""}' -H 'Content-Type:applicatio
 
 | Role | Path                                                |  Method | Description     |
 |------|-----------------------------------------------------|---------|-----------------|
-| Admin| [`/rest/admin/restaurants/{restaurantId}/courses`]  |   `GET` | Get all courses |
-| User | [`/rest/profile/restaurants/{restaurantId}/courses`]|   `GET` | Get all courses |
+| Admin| [`/rest/admin/restaurants/{restaurantId}/dishes`]  |   `GET` | Get all dishes |
+| User | [`/rest/profile/restaurants/{restaurantId}/dishes`]|   `GET` | Get all dishes |
 * **Example:**
 
-`curl -s http://localhost:8080/graduation/rest/profile/restaurants/100003/courses --user ivan-i@ya.ru:qwerty`
+`curl -s http://localhost:8080/graduation/rest/profile/restaurants/100003/dishes --user ivan-i@ya.ru:qwerty`
 
 | Role | Path                                                     |  Method | Description      |
 |------|-----------------------------------|----------------------|----------------------------|
-| Admin| [`/rest/admin/restaurants/{restaurantId}/courses/{id}`]  |   `GET` | Get course by id |
-| User | [`/rest/profile/restaurants/{restaurantId}/courses/{id}`]|   `GET` | Get course by id |
+| Admin| [`/rest/admin/restaurants/{restaurantId}/dishes/{id}`]  |   `GET` | Get course by id |
+| User | [`/rest/profile/restaurants/{restaurantId}/dishes/{id}`]|   `GET` | Get course by id |
 * **Example:**
 
-`curl -s http://localhost:8080/graduation/rest/profile/restaurants/100003/courses/100013 --user ivan-i@ya.ru:qwerty`
+`curl -s http://localhost:8080/graduation/rest/profile/restaurants/100003/dishes/100013 --user ivan-i@ya.ru:qwerty`
 
 | Role | Path                                              |  Method  | Description   |
 |------|---------------------------------------------------|----------|---------------|
-| Admin| [`/rest/admin/restaurants/{restaurantId}/courses`]|   `POST` | Create course |
+| Admin| [`/rest/admin/restaurants/{restaurantId}/dishes`]|   `POST` | Create course |
 * **Example:**
 
-`curl -s -X POST -d '{"name":"New position"}' -H 'Content-Type:application/json' http://localhost:8080/graduation/rest/admin/restaurants/100003/courses --user admin@gmail.com:admin`\
-Create with error: `curl -s -X POST -d '{"name":" "}' -H 'Content-Type:application/json' http://localhost:8080/graduation/rest/admin/restaurants/100003/courses --user admin@gmail.com:admin`
+`curl -s -X POST -d '{"name":"New position"}' -H 'Content-Type:application/json' http://localhost:8080/graduation/rest/admin/restaurants/100003/dishes --user admin@gmail.com:admin`\
+Create with error: `curl -s -X POST -d '{"name":" "}' -H 'Content-Type:application/json' http://localhost:8080/graduation/rest/admin/restaurants/100003/dishes --user admin@gmail.com:admin`
 
 | Role | Path                                                   |  Method | Description   |
 |------|--------------------------------------------------------|---------|---------------|
-| Admin| [`/rest/admin/restaurants/{restaurantId}/courses/{id}`]|   `PUT` | Update course |
+| Admin| [`/rest/admin/restaurants/{restaurantId}/dishes/{id}`]|   `PUT` | Update course |
 * **Example:**
 
-`curl -s -X PUT -d '{"id":100013,"name":"Updated"}' -H 'Content-type: application/json' http://localhost:8080/graduation/rest/admin/restaurants/100003/courses/100013 --user admin@gmail.com:admin`
+`curl -s -X PUT -d '{"id":100013,"name":"Updated"}' -H 'Content-type: application/json' http://localhost:8080/graduation/rest/admin/restaurants/100003/dishes/100013 --user admin@gmail.com:admin`
 
 | Role | Path                                                   |  Method | Description   |
 |------|--------------------------------------------------------|---------|---------------|
-| Admin| [`/rest/admin/restaurants/{restaurantId}/courses/{id}`]|`DELETE` | Delete course |
+| Admin| [`/rest/admin/restaurants/{restaurantId}/dishes/{id}`]|`DELETE` | Delete course |
 * **Example:**
 
-`curl -s -X DELETE http://localhost:8080/graduation/rest/admin/restaurants/100003/courses/100044 --user admin@gmail.com:admin`
+`curl -s -X DELETE http://localhost:8080/graduation/rest/admin/restaurants/100003/dishes/100044 --user admin@gmail.com:admin`
 #### OfferRestController
 
 | Role | Path                                               |  Method | Description    |

@@ -5,16 +5,15 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 public class DateTimeUtil {
-    // DataBase doesn't support LocalDate.MIN/MAX
-    private static final LocalDate MIN_DATE = LocalDate.of(1, 1, 1);
-    private static final LocalDate MAX_DATE = LocalDate.of(3000, 1, 1);
     public static final int RESTRICTION_HOUR = 11;
     // Time restriction should be tied to a certain timezone, i.e. ZoneId.of("Europe/Moscow"),
     // System default zone (ZoneId.systemDefault()) must be replaced with a desired timezone
     public static final ZoneId TIMEZONE = ZoneId.systemDefault();
+    // DataBase doesn't support LocalDate.MIN/MAX
+    private static final LocalDate MIN_DATE = LocalDate.of(1, 1, 1);
+    private static final LocalDate MAX_DATE = LocalDate.of(3000, 1, 1);
 
     private DateTimeUtil() {
     }
@@ -36,6 +35,6 @@ public class DateTimeUtil {
     }
 
     public static LocalDate getZoneAwareCurrentDate() {
-        return ZonedDateTime.now(TIMEZONE).toLocalDate();
+        return LocalDate.now(TIMEZONE);
     }
 }

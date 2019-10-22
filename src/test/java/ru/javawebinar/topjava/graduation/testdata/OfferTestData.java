@@ -1,6 +1,6 @@
 package ru.javawebinar.topjava.graduation.testdata;
 
-import ru.javawebinar.topjava.graduation.model.Course;
+import ru.javawebinar.topjava.graduation.model.Dish;
 import ru.javawebinar.topjava.graduation.model.Offer;
 
 import java.time.LocalDate;
@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.javawebinar.topjava.graduation.model.AbstractBaseEntity.START_SEQ;
-import static ru.javawebinar.topjava.graduation.testdata.CourseTestData.*;
+import static ru.javawebinar.topjava.graduation.testdata.DishTestData.*;
 import static ru.javawebinar.topjava.graduation.testdata.RestaurantTestData.*;
 
 public class OfferTestData {
@@ -60,8 +60,8 @@ public class OfferTestData {
     }
 
     public static List<Offer> getCreated() {
-        Offer soup = new Offer(new Course("Борщ", MUMU), MUMU, LocalDate.now(), 11990); // existing
-        Offer drink = new Offer(new Course("Напиток", MUMU), MUMU, LocalDate.now(), 8970); // new
+        Offer soup = new Offer(new Dish("Борщ", MUMU), MUMU, LocalDate.now(), 11990); // existing
+        Offer drink = new Offer(new Dish("Напиток", MUMU), MUMU, LocalDate.now(), 8970); // new
         return List.of(soup, drink);
     }
 

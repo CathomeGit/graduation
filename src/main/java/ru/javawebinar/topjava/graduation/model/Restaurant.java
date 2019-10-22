@@ -8,10 +8,10 @@ import java.util.List;
 @Entity
 @Table(name = "restaurants",
         uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "restaurants_unique_name_idx")})
-@NamedEntityGraph(name = "restaurant-with-offers-courses",
+@NamedEntityGraph(name = "restaurant-with-offers-dishes",
         attributeNodes = {@NamedAttributeNode(value = "offers", subgraph = "offers-subgraph")},
         subgraphs = {@NamedSubgraph(name = "offers-subgraph",
-                attributeNodes = {@NamedAttributeNode("course")
+                attributeNodes = {@NamedAttributeNode("dish")
                 })
         }
 )

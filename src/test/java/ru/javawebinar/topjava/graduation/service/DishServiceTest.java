@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
-import ru.javawebinar.topjava.graduation.model.Course;
+import ru.javawebinar.topjava.graduation.model.Dish;
 import ru.javawebinar.topjava.graduation.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
@@ -12,32 +12,32 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static ru.javawebinar.topjava.graduation.testdata.CourseTestData.assertMatch;
-import static ru.javawebinar.topjava.graduation.testdata.CourseTestData.getCreated;
-import static ru.javawebinar.topjava.graduation.testdata.CourseTestData.getUpdated;
-import static ru.javawebinar.topjava.graduation.testdata.CourseTestData.*;
+import static ru.javawebinar.topjava.graduation.testdata.DishTestData.assertMatch;
+import static ru.javawebinar.topjava.graduation.testdata.DishTestData.getCreated;
+import static ru.javawebinar.topjava.graduation.testdata.DishTestData.getUpdated;
+import static ru.javawebinar.topjava.graduation.testdata.DishTestData.*;
 import static ru.javawebinar.topjava.graduation.testdata.RestaurantTestData.*;
 
-class CourseServiceTest extends AbstractServiceTest {
+class DishServiceTest extends AbstractServiceTest {
     @Autowired
-    protected CourseService service;
+    protected DishService service;
 
     @Test
     void create() {
-        Course newCourse = getCreated();
-        int restaurantId = newCourse.getRestaurant().getId();
-        Course created = service.create(new Course(newCourse), restaurantId);
-        newCourse.setId(created.getId());
-        assertMatch(created, newCourse);
-        List<Course> expected = new LinkedList<>(PRIME_COURSES);
-        expected.add(newCourse);
+        Dish newDish = getCreated();
+        int restaurantId = newDish.getRestaurant().getId();
+        Dish created = service.create(new Dish(newDish), restaurantId);
+        newDish.setId(created.getId());
+        assertMatch(created, newDish);
+        List<Dish> expected = new LinkedList<>(PRIME_DISHES);
+        expected.add(newDish);
         assertMatch(service.getAll(restaurantId), expected);
     }
 
     @Test
     void duplicateNameCreate() {
         assertThrows(DataAccessException.class, () ->
-                service.create(new Course(MUMU_01_DRINK.getName(), MUMU), MUMU.getId()));
+                service.create(new Dish(MUMU_01_DRINK.getName(), MUMU), MUMU.getId()));
     }
 
     @Test
@@ -59,8 +59,8 @@ class CourseServiceTest extends AbstractServiceTest {
 
     @Test
     void get() {
-        Course course = service.get(PRIME_01_DRINK.getId(), PRIME.getId());
-        assertMatch(course, PRIME_01_DRINK);
+        Dish dish = service.get(PRIME_01_DRINK.getId(), PRIME.getId());
+        assertMatch(dish, PRIME_01_DRINK);
     }
 
     @Test
@@ -71,7 +71,7 @@ class CourseServiceTest extends AbstractServiceTest {
 
     @Test
     void update() {
-        Course updated = getUpdated();
+        Dish updated = getUpdated();
         int restaurantId = updated.getRestaurant().getId();
         service.update(updated, restaurantId);
         assertMatch(service.get(updated.getId(), restaurantId), updated);
@@ -79,7 +79,7 @@ class CourseServiceTest extends AbstractServiceTest {
 
     @Test
     void updateDuplicate() {
-        Course updated = getUpdated();
+        Dish updated = getUpdated();
         int restaurantId = updated.getRestaurant().getId();
         updated.setName(PRIME_02_SALAD.getName());
         assertThrows(DataAccessException.class, () -> service.update(updated, restaurantId));
@@ -87,14 +87,14 @@ class CourseServiceTest extends AbstractServiceTest {
 
     @Test
     void getAll() {
-        List<Course> all = service.getAll(KFC.getId());
-        assertMatch(all, KFC_COURSES);
+        List<Dish> all = service.getAll(KFC.getId());
+        assertMatch(all, KFC_DISHES);
     }
 
     @Test
     void createWithException() throws Exception {
         int restaurantId = PRIME.getId();
-        validateRootCause(() -> service.create(new Course(" ", PRIME), restaurantId),
+        validateRootCause(() -> service.create(new Dish(" ", PRIME), restaurantId),
                 ConstraintViolationException.class);
     }
 }

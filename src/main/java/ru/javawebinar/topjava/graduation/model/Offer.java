@@ -14,14 +14,14 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "offers",
-        uniqueConstraints = {@UniqueConstraint(name = "offers_unique_course_restaurant_date_idx",
-                columnNames = {"course_id", "restaurant_id", "date"})})
+        uniqueConstraints = {@UniqueConstraint(name = "offers_unique_dish_restaurant_date_idx",
+                columnNames = {"dish_id", "restaurant_id", "date"})})
 public class Offer extends AbstractBaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id", nullable = false)
+    @JoinColumn(name = "dish_id", nullable = false)
     @NotNull
-    private Course course;
+    private Dish dish;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -46,27 +46,27 @@ public class Offer extends AbstractBaseEntity {
     }
 
     public Offer(Offer offer) {
-        this(offer.getId(), offer.getCourse(), offer.getRestaurant(), offer.getDate(), offer.getPrice());
+        this(offer.getId(), offer.getDish(), offer.getRestaurant(), offer.getDate(), offer.getPrice());
     }
 
-    public Offer(Course course, Restaurant restaurant, LocalDate date, Integer price) {
-        this(null, course, restaurant, date, price);
+    public Offer(Dish dish, Restaurant restaurant, LocalDate date, Integer price) {
+        this(null, dish, restaurant, date, price);
     }
 
-    public Offer(Integer id, Course course, Restaurant restaurant, LocalDate date, Integer price) {
+    public Offer(Integer id, Dish dish, Restaurant restaurant, LocalDate date, Integer price) {
         super(id);
-        this.course = course;
+        this.dish = dish;
         this.restaurant = restaurant;
         this.date = date;
         this.price = price;
     }
 
-    public Course getCourse() {
-        return course;
+    public Dish getDish() {
+        return dish;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setDish(Dish dish) {
+        this.dish = dish;
     }
 
     public Restaurant getRestaurant() {
@@ -96,7 +96,7 @@ public class Offer extends AbstractBaseEntity {
     @Override
     public String toString() {
         return "Offer{" +
-                "course=" + course.name +
+                "dish=" + dish.name +
                 ", restaurant=" + restaurant.name +
                 ", date=" + date +
                 ", price=" + price +

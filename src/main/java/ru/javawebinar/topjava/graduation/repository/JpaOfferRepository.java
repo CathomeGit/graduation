@@ -20,12 +20,12 @@ public interface JpaOfferRepository extends JpaRepository<Offer, Integer> {
     @Query("DELETE FROM Offer o WHERE o.restaurant.id=?1 AND o.date=?2")
     void deleteAllOnDate(int restaurantId, LocalDate date);
 
-    @EntityGraph(attributePaths = {"course"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = {"dish"}, type = EntityGraph.EntityGraphType.LOAD)
     Offer findByIdAndRestaurantId(int id, int restaurantId);
 
-    @EntityGraph(attributePaths = {"course"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = {"dish"}, type = EntityGraph.EntityGraphType.LOAD)
     List<Offer> findAllByRestaurantIdAndDateBetween(int restaurantId, LocalDate startDate, LocalDate endDate, Sort sort);
 
-    @EntityGraph(attributePaths = {"course"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = {"dish"}, type = EntityGraph.EntityGraphType.LOAD)
     List<Offer> findAllByRestaurantId(int restaurantId, Sort sort);
 }

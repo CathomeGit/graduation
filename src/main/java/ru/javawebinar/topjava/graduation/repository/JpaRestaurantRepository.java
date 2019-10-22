@@ -20,6 +20,6 @@ public interface JpaRestaurantRepository extends JpaRepository<Restaurant, Integ
     @Query("DELETE FROM Restaurant r WHERE r.id=?1")
     int delete(int id);
 
-    @EntityGraph(value = "restaurant-with-offers-courses", type = EntityGraph.EntityGraphType.FETCH)
+    @EntityGraph(value = "restaurant-with-offers-dishes", type = EntityGraph.EntityGraphType.FETCH)
     List<Restaurant> findAllByOffers_date(LocalDate date, Sort sort);
 }

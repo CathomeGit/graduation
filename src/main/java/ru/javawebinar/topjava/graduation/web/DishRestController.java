@@ -6,8 +6,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.javawebinar.topjava.graduation.model.Course;
-import ru.javawebinar.topjava.graduation.service.CourseService;
+import ru.javawebinar.topjava.graduation.model.Dish;
+import ru.javawebinar.topjava.graduation.service.DishService;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -18,29 +18,29 @@ import static ru.javawebinar.topjava.graduation.util.ValidationUtil.checkNew;
 
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-public class CourseRestController {
+public class DishRestController {
 
-    public static final String ADMIN_URL = "/rest/admin/restaurants/{restaurantId}/courses";
-    public static final String USER_URL = "/rest/profile/restaurants/{restaurantId}/courses";
+    public static final String ADMIN_URL = "/rest/admin/restaurants/{restaurantId}/dishes";
+    public static final String USER_URL = "/rest/profile/restaurants/{restaurantId}/dishes";
 
     @Autowired
-    protected CourseService service;
+    protected DishService service;
 
     @GetMapping(value = {ADMIN_URL, USER_URL})
-    public List<Course> getAll(@PathVariable int restaurantId) {
+    public List<Dish> getAll(@PathVariable int restaurantId) {
         return service.getAll(restaurantId);
     }
 
     @GetMapping(value = {ADMIN_URL + "/{id}", USER_URL + "/{id}"})
-    public Course get(@PathVariable int restaurantId, @PathVariable int id) {
+    public Dish get(@PathVariable int restaurantId, @PathVariable int id) {
         return service.get(id, restaurantId);
     }
 
     @PostMapping(value = ADMIN_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Course> createWithLocation(@PathVariable int restaurantId,
-                                                     @Valid @RequestBody Course course) {
-        checkNew(course);
-        Course created = service.create(course, restaurantId);
+    public ResponseEntity<Dish> createWithLocation(@PathVariable int restaurantId,
+                                                   @Valid @RequestBody Dish dish) {
+        checkNew(dish);
+        Dish created = service.create(dish, restaurantId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(ADMIN_URL + "/{id}")
                 .buildAndExpand(restaurantId, created.getId()).toUri();
@@ -57,8 +57,8 @@ public class CourseRestController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void update(@PathVariable int restaurantId,
                        @PathVariable int id,
-                       @Valid @RequestBody Course course) {
-        assureIdConsistent(course, id);
-        service.update(course, restaurantId);
+                       @Valid @RequestBody Dish dish) {
+        assureIdConsistent(dish, id);
+        service.update(dish, restaurantId);
     }
 }
