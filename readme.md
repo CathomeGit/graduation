@@ -1,7 +1,7 @@
 ## TopJava graduation project
-Author - Tatiana Danilina
-##Running the application
- * build package with Maven `mvn package`
+Author - [Tatiana Danilina](https://github.com/CathomeGit)
+## Running the application
+ * Build package with Maven `mvn package`
  * Deploy `graduation.war` with Tomcat at `localhost:8080/graduation`
  * Run REST requests listed below
 ### Application description
