@@ -20,6 +20,7 @@
         <spring-data-jpa.version>2.1.9.RELEASE</spring-data-jpa.version>
         <spring.security.version>5.1.5.RELEASE</spring.security.version>
         <maven.version>3.8.1</maven.version>
+        <maven-war.version>2.2</maven-war.version>
         <cargo.version>1.7.7</cargo.version>
         <tomcat.version>9.0.24</tomcat.version>
         <hsqldb.version>2.5.0</hsqldb.version>
@@ -65,6 +66,14 @@
                 <version>${maven-surefire.version}</version>
                 <configuration>
                     <argLine>-Dfile.encoding=UTF-8</argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven-war.version}</version>
+                <configuration>
+                    <webXml>src\main\webapp\web.xml</webXml>
                 </configuration>
             </plugin>
 

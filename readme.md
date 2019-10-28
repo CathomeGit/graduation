@@ -1,4 +1,9 @@
 ## TopJava graduation project
+Author - Tatiana Danilina
+##Running the application
+ * build package with Maven `mvn package`
+ * Deploy `graduation.war` with Tomcat at `localhost:8080/graduation`
+ * Run REST requests listed below
 ### Application description
 A voting system for deciding where to have lunch with REST API.\
 Admins manage restaurants and upload its' menus daily. Users vote for a restaurant to have lunch at until 11:00.\
