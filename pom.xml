@@ -18,7 +18,7 @@
 
         <spring.version>5.3.6</spring.version>
         <spring-data-jpa.version>2.1.9.RELEASE</spring-data-jpa.version>
-        <spring.security.version>5.1.5.RELEASE</spring.security.version>
+        <spring.security.version>5.2.10.RELEASE</spring.security.version>
         <maven.version>3.8.1</maven.version>
         <maven-war.version>2.2</maven-war.version>
         <cargo.version>1.7.7</cargo.version>
